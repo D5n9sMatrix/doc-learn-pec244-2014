@@ -1,0 +1,21 @@
+Version: 1.0
+
+RestoreWorkspace: Default
+SaveWorkspace: Default
+AlwaysSaveHistory: Default
+
+EnableCodeIndexing: Yes
+UseSpacesForTab: Yes
+NumSpacesForTab: 2
+Encoding: UTF-8
+
+RnwWeave: Sweave
+LaTeX: pdfLaTeX
+
+BuildType: Package
+PackageUseDevtools: Yes
+PackageInstallArgs: install.packages("Matrix", INSTALL_opts=c("--no-multiarch"))
+PackageBuildArgs: install.packages("Matrix", INSTALL_opts=c("--no-multiarch"))
+PackageBuildBinaryArgs: install.packages("Matrix", INSTALL_opts=c("--no-multiarch"))
+PackageCheckArgs: install.packages("Matrix", INSTALL_opts=c("--no-multiarch"))
+PackageRoxygenize: rd,collate,namespace,vignette

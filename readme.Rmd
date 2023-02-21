@@ -1,0 +1,305 @@
+---
+title: "PEC 422/2014 ENTRY CONTENT<br/>
+Proposal for amendment to the Constitution<br/>
+
+Situation Ready for agenda in plenary (Plen)<br/>
+
+Proposition Identification"
+output: github_document
+---
+
+## Tree folder and files 
+
+```{r tree}
+# .
+# ├── ccjc.png
+# ├── ccp.png
+# ├── doc-learn-pec244%2014.Rproj
+# ├── license
+# ├── matrix
+# │   └── gnu
+# │       ├── bin
+# │       │   ├── i.R
+# │       │   ├── ricd.R
+# │       │   └── table.R
+# │       ├── image
+# │       ├── lib
+# │       │   └── ccjc.R
+# │       └── test
+# │           └── ccp.R
+# ├── readme_files
+# │   └── figure-gfm
+# │       ├── ccjc-1.png
+# │       ├── ccp-1.png
+# │       └── ricd-1.png
+# ├── readme.md
+# ├── readme.Rmd
+# └── ricd.png
+
+```
+## bit::bit-demo demo of the bit package
+
+```{r i}
+#!/usr/bin/r
+
+## ---- echo = FALSE, results = "hide", message = FALSE-------------------------
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+require(bit)
+.ff.version <- try(packageVersion("ff"), silent = TRUE)
+.ff.is.available <- !inherits(.ff.version, "try-error") && .ff.version >= "4.0.0" && require(ff)
+#tools::buildVignette("vignettes/bit-demo.Rmd")
+#devtools::build_vignettes()
+
+## -----------------------------------------------------------------------------
+n <- 1e8
+b1 <- bit(n)
+b1
+
+## -----------------------------------------------------------------------------
+object.size(b1)/n
+
+## -----------------------------------------------------------------------------
+b1[10:30] <- TRUE
+summary(b1)
+
+## -----------------------------------------------------------------------------
+b2 <- bit(n)
+b2[20:40] <- TRUE
+b2
+
+## -----------------------------------------------------------------------------
+b1 & b2
+
+## -----------------------------------------------------------------------------
+summary(b1 & b2)
+
+## -----------------------------------------------------------------------------
+w1 <- as.bitwhich(b1) 
+w2 <- as.bitwhich(b2)
+object.size(w1)/n
+
+## -----------------------------------------------------------------------------
+w1 & w2
+
+## -----------------------------------------------------------------------------
+summary(w1 & w2)
+
+## -----------------------------------------------------------------------------
+summary(b1 & w2)
+
+## -----------------------------------------------------------------------------
+summary(b1, range=c(1,1000))
+
+## -----------------------------------------------------------------------------
+as.which(b1, range=c(1, 1000))
+
+## -----------------------------------------------------------------------------
+lapply(chunk(from=1, to=n, length=10), function(i)as.which(b1, range=i))
+
+## ---- eval=.ff.is.available---------------------------------------------------
+options(ffbatchbytes=1024^3)
+x <- ff(vmode="single", length=n)
+x[1:1000] <- runif(1000)
+lapply(chunk(x, length.out = 10), function(i)sum(x[as.hi(b1, range=i)]))
+
+## ---- eval=.ff.is.available---------------------------------------------------
+delete(x)
+rm(x, b1, b2, w1, w2, n)
+
+
+```
+
+## Available methods
+
+```{r table}
+#!/usr/bin/r
+
+## ----setup, include = FALSE---------------------------------------------------
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+## ----echo = FALSE, message = FALSE--------------------------------------------
+library(broom)
+library(dplyr)
+library(stringr)
+
+method_df <- function(method_name) {
+  m <- as.vector(methods(method_name))
+  tibble::tibble(class = str_remove(m, str_c(method_name, "[.]")),
+                 !!method_name := "x")
+}
+
+method_df("tidy") %>% 
+  left_join(method_df("glance")) %>% 
+  left_join(method_df("augment")) %>% 
+  mutate_all(tidyr::replace_na, "") %>% 
+  knitr::kable()
+
+```
+
+R Markdown with the Docco Classic Style
+This is an example of Markdown vignettes using the Docco style.
+
+Docco
+To use the Docco style for Markdown vignettes in an R package, you need to
+
+add *.Rmd files under the vignettes directory
+add Suggests: knitr and Vignette Builder: knitr to the DESCRIPTION file
+specify the vignette engine \VignetteEngine{knitr::docco_classic} in the Rmd files (inside HTML comments)
+After building and installing the package, you can view vignettes via
+
+browse Vignettes(package = 'Your_Package')
+¶
+Examples
+Below are some code chunks as examples.
+
+cat('_hello_ **markdown**!', '\n')
+¶
+hello markdown!
+
+Normally you do not need any chunk options.
+
+1+1
+## [1] 2
+10:1
+##  [1] 10  9  8  7  6  5  4  3  2  1
+rnorm(5)^2
+## [1] 0.26160 0.04578 0.03464 0.01449 1.02583
+strsplit('hello, markdown vignettes', '')
+## [[1]]
+##  [1] "h" "e" "l" "l" "o" "," " " "m" "a" "r" "k" "d" "o" "w" "n" " " "v" "i" "g"
+## [20] "n" "e" "t" "t" "e" "s"
+¶
+Feel free to draw beautiful plots and write math 
+¶
+plot of chunk unnamed-chunk-2
+
+n=300; set.seed(123)
+par(mar=c(4,4,.1,.1))
+plot(rnorm(n), rnorm(n), pch=21, cex=5*runif(n), col='white', bg='gray')
+¶
+How does it work
+The markdown package (>= v0.6.2) supports custom HTML templates, and the docco engine in knitr uses a custom template to compile Markdown to HTML:
+
+head(knitr::rocco, 5)
+##                                                                                    
+## 1 function (input, ...)                                                            
+## 2 {                                                                                
+## 3     out = knit2html(input, ..., meta = list(css = system.file("misc",            
+## 4         "docco-classic.css", package = "knitr")), template = system.file("misc", 
+## 5         "docco-classic.html", package = "knitr"))
+¶
+That is it.
+
+You probably have noticed that you can adjust the widths of the two columns using your cursor. What is more, press T on your keyboard, and see what happens.
+```{r ccjc}
+
+#!/usr/bin/r
+## ----hello, results='asis'----------------------------------------------------
+cat('_hello_ **markdown**!', '\n')
+
+## -----------------------------------------------------------------------------
+1+1
+10:1
+rnorm(5)^2
+strsplit('hello, markdown vignettes', '')
+
+## -----------------------------------------------------------------------------
+n=300; set.seed(123)
+par(mar=c(4,4,.1,.1))
+plot(rnorm(n), rnorm(n), pch=21, cex=5*runif(n), col='white', bg='gray')
+
+## -----------------------------------------------------------------------------
+head(knitr::rocco, 5)
+
+
+```
+
+```{r ccp}
+#!/usr/bin/r
+
+## ----hello, results='asis'----------------------------------------------------
+cat('_hello_ **markdown**!', '\n')
+
+## -----------------------------------------------------------------------------
+1+1
+10:1
+rnorm(5)^2
+strsplit('hello, markdown vignettes', '')
+
+## -----------------------------------------------------------------------------
+n=300; set.seed(123)
+par(mar=c(4,4,.1,.1))
+plot(rnorm(n), rnorm(n), pch=21, cex=5*runif(n), col='white', bg='gray')
+
+## ----header, eval=FALSE-------------------------------------------------------
+#  knit2html(..., template = system.file('misc', 'docco-template.html', package='knitr'))
+```
+
+
+numericDeriv {stats}	R Documentation
+Evaluate Derivatives Numerically
+Description
+numericDeriv numerically evaluates the gradient of an expression.
+
+Usage
+numericDeriv(expr, theta, rho = parent.frame(), dir = 1,
+             eps = .Machine$double.eps ^ (1/if(central) 3 else 2), central = FALSE)
+Arguments
+expr	
+expression or call to be differentiated. Should evaluate to a numeric vector.
+
+theta	
+character vector of names of numeric variables used in expr.
+
+rho	
+environment containing all the variables needed to evaluate expr.
+
+dir	
+numeric vector of directions, typically with values in -1, 1 to use for the finite differences; will be recycled to the length of theta.
+
+eps	
+a positive number, to be used as unit step size h for the approximate numerical derivative (f(x+h)-f(x))/h or the central version, see central.
+
+central	
+logical indicating if central divided differences should be computed, i.e., (f(x+h) - f(x-h)) / 2h . These are typically more accurate but need more evaluations of f().
+
+Details
+This is a front end to the C function numeric_deriv, which is described in Writing R Extensions.
+
+The numeric variables must be of type double and not integer.
+
+Value
+The value of eval(expr, envir = rho) plus a matrix attribute "gradient". The columns of this matrix are the derivatives of the value with respect to the variables listed in theta.
+
+Author(s)
+Saikat DebRoy saikat@stat.wisc.edu; tweaks and eps, central options by R Core Team.
+
+Examples
+```{r ricd}
+#!/usr/bin/r
+
+myenv <- new.env()
+myenv$mean <- 0.
+myenv$sd   <- 1.
+myenv$x    <- seq(-3., 3., length.out = 31)
+nD <- numericDeriv(quote(pnorm(x, mean, sd)), c("mean", "sd"), myenv)
+str(nD)
+
+## Visualize :
+require(graphics)
+matplot(myenv$x, cbind(c(nD), attr(nD, "gradient")), type="l")
+abline(h=0, lty=3)
+## "gradient" is close to the true derivatives, you don't see any diff.:
+curve( - dnorm(x), col=2, lty=3, lwd=2, add=TRUE)
+curve(-x*dnorm(x), col=3, lty=3, lwd=2, add=TRUE)
+##
+## IGNORE_RDIFF_BEGIN
+# shows 1.609e-8 on most platforms
+all.equal(attr(nD,"gradient"),
+          with(myenv, cbind(-dnorm(x), -x*dnorm(x))))
+## IGNORE_RDIFF_END
+
+```
